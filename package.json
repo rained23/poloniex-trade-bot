@@ -9,7 +9,7 @@
   ],
   "author": "Bruno da Silva <email@brunodasilva.com>",
   "dependencies": {
-    "plnx": "0.0.x",
+    "plnx": "github:rained23/plnx",
     "technicalindicators": "0.2.x"
   },
   "engines": {

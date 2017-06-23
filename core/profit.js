@@ -20,14 +20,14 @@ exports.info = function(currency, asset) {
 	var currecyProfit = ((lastCurrency / currency)-1)*100;
 	var assetProfit = ((lastAsset / asset)-1)*100;
 	
-	log.info('info', "Profit >> Profit comparado com a ultima checagem");
+	log.info('info', "Profit >> Profit compared to the last check");
 	log.info('info', "Profit >> Currency: " + currecyProfit + "%");
 	log.info('info', "Profit >> Asset: " + assetProfit + "%");
 	
 	var currecyProfitInit = ((initCurrecy / currency)-1)*100;
 	var assetProfitInit = ((initAsset / asset)-1)*100;
 	
-	log.info('info', "Profit >> Profit comparado com a primeira checagem");
+	log.info('info', "Profit >> Profit compared to the first check ");
 	log.info('info', "Profit >> Currency: " + currecyProfitInit + "%");
 	log.info('info', "Profit >> Asset: " + assetProfitInit + "%");
 	

@@ -16,11 +16,11 @@ exports.sellOrderId = "";
 exports.updateBalance = function(){
 	log.info('debug', "advice >> updateBalance >> started");
 	
-	//media de preço entre a maxima e minima do livro de ofertas
+	// price average between the maximum and minimum of the offer book
 	exports.rate = (parseFloat(bot.pairTicker.highbid) + parseFloat(bot.pairTicker.lowask))/2;
 	exports.rate = exports.rate.toFixed(3);
 	
-	// valor atual do currency e asset
+	// current currency and asset value
 	exports.currency = bot.balance(bot.config.watch.currency)
 	exports.asset = bot.balance(bot.config.watch.asset)
 	
@@ -42,8 +42,8 @@ exports.sell = function (price, ammount){
 		exports.price = price;
 		exports.ammount = ammount;
 		
-		log.info('debug', "advice >> sell >> Ordem de venda criada: " + exports.sellOrderId + " | Preço: "+price+" | Ammount: " + ammount);
-		log.info('trade', "advice >> sell >> Preço: "+price+" | Ammount: "+ammount);
+		log.info('debug', "advice >> sell >> Sell order created: " + exports.sellOrderId + " | Price: "+price+" | Ammount: " + ammount);
+		log.info('trade', "advice >> sell >> Price: "+price+" | Ammount: "+ammount);
 	})
 }
 
@@ -62,8 +62,8 @@ exports.buy = function (price, ammount){
 		exports.price = price;
 		exports.ammount = ammount;
 		
-		log.info('debug', "advice >> buy >> buyOrderId: " + exports.buyOrderId + " price: " + price + " ammount: " + ammount);
-		log.info('trade', "advice >> buy >> Preço: "+price+" | Ammount: "+ammount);
+		log.info('debug', "advice >> buy >> Buy ORder created: " + exports.buyOrderId + " price: " + price + " ammount: " + ammount);
+		log.info('trade', "advice >> buy >> Price: "+price+" | Ammount: "+ammount);
 	})
 }
 
@@ -72,13 +72,13 @@ exports.calculate = function(opt){
 	log.info('debug', "advice >> calculate >> started");
 
 	if (opt == 'sell'){
-		log.info('debug', "advice >> calculate >> calculo do ammount para venda");
+		log.info('debug', "advice >> calculate >> Calculate amount to sell");
 		
 		exports.ammount = asset;
 		
 		log.info('debug', "advice >> calculate >> exports.ammount: " + exports.ammount);
 	} else if (opt == 'buy'){
-		log.info('debug', "advice >> calculate >> calculo do ammount para compra");
+		log.info('debug', "advice >> calculate >> Calculate amount to buy");
 		
 		var fee = 0.25; //ajustar as fee 
 	
@@ -92,7 +92,7 @@ exports.calculate = function(opt){
 //executa compra ou venda
 exports.opt = function(opt) {
 	log.info('debug', "advice >> opt >> started");
-	log.info('debug', "advice >> opt >> Iniciando operação para: " + opt);
+	log.info('debug', "advice >> opt >> Starting operation for: " + opt);
 	
 	exports.updateBalance();
 	exports.calculate(opt);
@@ -144,7 +144,7 @@ exports.stopLoss = function(){
 		log.info('debug',"stopLoss >> buyOrderId: "+exports.buyOrderId+" | Price: "+exports.price+" | rate: " +exports.rate);
 		if (exports.rate != parseFloat(bot.pairTicker.highbid)){
 			log.info('debug',"stopLoss >> exports.rate: "+exports.rate+" | highbid: "+parseFloat(bot.pairTicker.highbid));
-			log.info('debug',"stopLoss >> media (rate) diferente do ultimo bid >> Entra no MoveOrder");
+			log.info('debug',"stopLoss >> media (rate) diff from last bid >> Enter MoveOrder");
 			move = true;
 		}
 	} else if (exports.sellOrderId != 0){
@@ -152,13 +152,13 @@ exports.stopLoss = function(){
 		
 		if (exports.rate != parseFloat(BOT.pairTicker.lowask)){
 			log.info('debug',"stopLoss >> exports.rate: "+exports.rate+" | lowask: "+parseFloat(bot.pairTicker.lowask));
-			log.info('debug',"stopLoss >> media (rate) diferente do ultimo ask >> Entra no MoveOrder");
+			log.info('debug',"stopLoss >> media (rate) diff from last ask >> Enter MoveOrder");
 			move = true;
 		}
 	}
 	
 	log.info('debug', "stopLoss >> move: "+ move + " bot.isOpen(buyOrderId): "+ bot.isOpen(exports.buyOrderId) + " bot.isOpen(exports.sellOrderId): "+ bot.isOpen(exports.sellOrderId));
-	log.info('debug', "stopLoss >> Entra no moveorder? " + (move && (bot.isOpen(exports.buyOrderId) || bot.isOpen(exports.sellOrderId))));
+	log.info('debug', "stopLoss >> Enter MoveOrder? " + (move && (bot.isOpen(exports.buyOrderId) || bot.isOpen(exports.sellOrderId))));
 	
 	if (move && (bot.isOpen(exports.buyOrderId) || bot.isOpen(exports.sellOrderId))){
 		log.info('warn', "stopLoss >> move: "+move+" | new rate: "+exports.rate+" | old price: " +  exports.price);
@@ -171,7 +171,7 @@ exports.stopLoss = function(){
 			
 			exports.buyOrderId = data.orderNumber;
 			exports.price = exports.rate;
-			log.info('warn', "stopLoss >> Ordem atualizada com preço: " + exports.price);
+			log.info('warn', "stopLoss >> Order updated with price: " + exports.price);
 		});
 	} 
 }

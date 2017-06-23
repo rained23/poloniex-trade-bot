@@ -2,13 +2,13 @@ var config = require('../config.js');
 var debug = config.debug;
 
 var day = { //dias da semana, ah vá.. 
-		0: 'Domingo: ',
-		1: 'Segunda: ',
-		2: '  Terça: ',
-		3: ' Quarta: ',
-		4: ' Quinta: ',
-		5: '  Sexta: ',
-		6: ' Sábado: '
+		0: '   Sunday: ',
+		1: '   Monday: ',
+		2: '  Tuesday: ',
+		3: 'Wednesday: ',
+		4: ' Thursday: ',
+		5: '   Friday: ',
+		6: ' Saturday: '
 } 
 
 var color = {
@@ -22,7 +22,7 @@ var color = {
 
 exports.info = function (opt, message){
 	
-	//se debug estiver desativado, não imprime mensagem de debug
+	// if debug is disabled, does not print debug message
 	if(opt != 'debug' || debug){
 		var time = new Date();
 		var timestamp = day[time.getDay()] 

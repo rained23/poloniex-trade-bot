@@ -12,7 +12,7 @@ process.stdout.write('\x1Bc'); 		//Limpar tela de console
 process.title = '[POLONIEX BOT]';	//Adicionar titulo ao projeto
 
 // Mandar mensagem indicando inicialização do BOT
-log.info('start', "O BOT foi iniciado. Estou analisando mercado agora...");
+log.info('start', "The BOT has been started. I'm analyzing the market now ...");
 
 function manipularOrdens() {
 	log.info('debug', "manipularOrdens >> started");
@@ -26,7 +26,7 @@ function manipularOrdens() {
 
 	
 	if ( advice.buyOrderId == 0 && advice.sellOrderId == 0) { 
-		log.info('debug', "manipularOrdens >> Não existe nenhuma ordem aberta");
+		log.info('debug', "ManipulateOrdens >> There is no open order");
 
 		if (buyable == true) {
 			advice.opt('buy');			
@@ -35,12 +35,12 @@ function manipularOrdens() {
 
 
 	if( advice.buyOrderId != 0 && advice.sellOrderId == 0) {
-		log.info('debug', "manipularOrdens >> A ordem de compra está aberta e a ordem de venda fechada");
+		log.info('debug', "ManipulateOrdens >> The purchase order is open and the sell order is closed");
 		
 		if ( !exchange.isOpen(advice.buyOrderId)) {
-			log.info('debug', "manipularOrdens >> A ordem de compra já foi finalizda");
+			log.info('debug', "Handle Orders >> The purchase order has already been finalized");
 			log.info('debug', "manipularOrdens >> sellOrderId: " +advice.sellOrderId + " buyOrderId: "+ advice.buyOrderId);
-			log.info('debug', "manipularOrdens >> criar uma ordem de venda com saldo em btc");
+			log.info('debug', "ManipulateOrdens >> create a sell order with balance in btc");
 			
 			advice.buyOrderId = 0;
 			advice.opt('sell');
@@ -48,11 +48,11 @@ function manipularOrdens() {
 	}
 	
 	if( advice.sellOrderId != 0 && advice.buyOrderId == 0) {
-		log.info('debug', "manipularOrdens >> Ambas ordens já foram abertas");
+		log.info('debug', "manipularOrdens >> Both orders have already been opened");
 		
 		if ( !exchange.isOpen(sellOrderId)) {
-			log.info('debug', "manipularOrdens >> Orderm de venda fechada");
-			log.info('info', "manipularOrdens >> Trade efetuado com sucesso");
+			log.info('debug', "manipularOrdens >> Order of sell closed");
+			log.info('info', "manipularOrdens >> Trade successfully completed");
 			
 			sellOrderId = 0;
 			buyOrderId = 0;
@@ -70,22 +70,19 @@ log.info('debug', "checkAccount >> started");
 	
 	advice.updateBalance();
 	
-	log.info('info', "Saldo em " + config.watch.currency + ": " + advice.currency);
-	log.info('info', "Saldo em " + config.watch.asset + ":  " + advice.asset);
+	log.info('info', "Balance at " + config.watch.currency + ": " + advice.currency);
+	log.info('info', "Balance at " + config.watch.asset + ":  " + advice.asset);
 	profit.init(advice.currency, advice.asset);
 	
-	//Imprime de 30 em 30 minutos o saldo
-	setInterval(function(){
-		log.info('info', "Saldo em " + config.watch.currency + ": " + advice.currency);
-		log.info('info', "Saldo em " + config.watch.asset + ":  " + advice.asset);
+		log.info('info', "Balance at " + config.watch.asset + ":  " + advice.asset);
 		profit.init(advice.currency, advice.asset);
 	},showProfitTime);
 	
-	// caso ele tenha saldo começar a manipular as ordens
+	// if he has balance begin to manipulate the orders
 	setInterval(function c(){ manipularOrdens(); return c; }()  , runTraderTime);
 	
-	//Rodar o stop loss para verificar ordens de compra em aberto
-	//Cancelar ordens fora de preço de mercado
+	// Rotate the stop loss to check open purchase orders
+	// Cancel orders out of market price
 	setInterval(function(){
 		advice.stopLoss();
 	},runStopLossTime);
@@ -101,14 +98,14 @@ if (exchange.config.trader.enabled){
 	var check = setInterval(
 		function() {
 			if(!exchange.lastPrice() > 0) {
-				log.info('warn', "Recebendo informações de preço ...");
+				log.info('warn', "Receiving price information ...");
 			}
 			else if( !(exchange.getCandles().length > 0)) {
-				log.info('warn', "Recebendo informações de candlesticks ...");
+				log.info('warn', "Receiving information from candlesticks ...");
 			}
 			
 			else if(!(exchange.balanceVal[exchange.config.watch.currency] > 0)) {
-				log.info('warn', "Recebendo informações da sua conta ...");
+				log.info('warn', "Receiving information from your account ...");
 			}
 			else {
 				checkAccount()
