@@ -74,6 +74,8 @@ log.info('debug', "checkAccount >> started");
 	log.info('info', "Balance at " + config.watch.asset + ":  " + advice.asset);
 	profit.init(advice.currency, advice.asset);
 	
+	setInterval(function(){
+ 		log.info('info', "Balance at  " + config.watch.currency + ": " + advice.currency);
 		log.info('info', "Balance at " + config.watch.asset + ":  " + advice.asset);
 		profit.init(advice.currency, advice.asset);
 	},showProfitTime);
