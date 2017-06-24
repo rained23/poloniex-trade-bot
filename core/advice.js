@@ -31,9 +31,9 @@ exports.sell = function (price, ammount){
 	log.info('debug', "advice >> sell >> started");
 
 	price = parseFloat(bot.addpercent(parseFloat(bot.pairTicker.lowask), 0.2));
-	price = price.toFixed(3);
-	price = parseFloat(bot.addpercent(parseFloat(price), 0.25)).toFixed(2);
-	
+	price = price.toFixed(8);
+	price = parseFloat(bot.addpercent(parseFloat(price), 0.25)).toFixed(8);
+
 	ammount =  parseFloat(bot.rempercent(parseFloat(bot.config.trader.value/price), 0.25));
 	ammount = ammount.toFixed(8);
 
@@ -59,7 +59,7 @@ exports.buy = function (price, ammount){
 	log.info('debug', "advice >> buy >> started");
 	
 	price = parseFloat(bot.rempercent(parseFloat(bot.pairTicker.highbid), 0.1));
-	price = price.toFixed(3);
+	price = price.toFixed(8);
 
 	// ajustar as fee
 	ammount =  bot.config.trader.value/price;
