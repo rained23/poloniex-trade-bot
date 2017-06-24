@@ -26,6 +26,7 @@ exports.triggerPrices = function() {
 					high: data[8],
 					low: data[9]
 				}
+			 log.info('info', exports.pairTicker);
 			}
 		})
 	})
