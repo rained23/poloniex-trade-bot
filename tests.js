@@ -101,6 +101,7 @@ if (exchange.config.trader.enabled){
 		function() {
 			if(!exchange.lastPrice() > 0) {
 				log.info('warn', "Receiving price information ...");
+				log.info('info', "Last Price : "+exchange.lastPrice());
 			}
 			else if( !(exchange.getCandles().length > 0)) {
 				log.info('warn', "Receiving information from candlesticks ...");
