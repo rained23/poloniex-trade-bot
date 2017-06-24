@@ -4,7 +4,7 @@
 const smaInd = require('technicalindicators').SMA;
 const emaInd = require('technicalindicators').EMA;
 const config = require("../config.js").EMASMA;
-
+const log = require('./core/log.js');
 /*
  * Essa função serve pra calcular o EMA e SMA
  * @prices: valores de entrada
@@ -48,9 +48,12 @@ exports.calculate = function(candles) {
 	var lastsma = line1[line1.length - 1]
 	var lastema = line2[line2.length - 1]
 	
+	log.info('info', 'Last SMA : '+lastsma);
+	log.info('info', 'Last EMA : '+lastema);
 	// caso a tendencia de short é maior que a de long
 	// caso for true = tendencia de alta / caso for false tendencia de baixa
 	var trend = config.thresholds.max > (lastema / lastsma) && (lastema / lastsma) > config.thresholds.min;
 
+	log.info('info','EMASMA ('+ config.thresholds.min+'-'+config.thresholds.max+') : '+(lastema/lastsma) );
 	return trend;
 }
