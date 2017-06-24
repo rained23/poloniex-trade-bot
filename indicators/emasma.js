@@ -4,7 +4,7 @@
 const smaInd = require('technicalindicators').SMA;
 const emaInd = require('technicalindicators').EMA;
 const config = require("../config.js").EMASMA;
-const log = require('./core/log.js');
+const log = require('../core/log.js');
 /*
  * Essa função serve pra calcular o EMA e SMA
  * @prices: valores de entrada
