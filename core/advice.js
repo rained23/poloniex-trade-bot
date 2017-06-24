@@ -29,6 +29,14 @@ exports.updateBalance = function(){
 
 exports.sell = function (price, ammount){
 	log.info('debug', "advice >> sell >> started");
+
+	price = parseFloat(bot.addpercent(parseFloat(bot.pairTicker.lowask), 0.2));
+	price = price.toFixed(3);
+	price = parseFloat(bot.addpercent(parseFloat(price), 0.25)).toFixed(2);
+	
+	ammount =  parseFloat(bot.rempercent(parseFloat(bot.config.trader.value/price), 0.25));
+	ammount = ammount.toFixed(8);
+
 	log.info('debug', "advice >> sell >> price: " +price+ " bitcoinsVal: "+ammount);
 	
 	// criar uma ordem de venda com saldo em btc
@@ -49,8 +57,17 @@ exports.sell = function (price, ammount){
 
 exports.buy = function (price, ammount){
 	log.info('debug', "advice >> buy >> started");
+	
+	price = parseFloat(bot.rempercent(parseFloat(bot.pairTicker.highbid), 0.1));
+	price = price.toFixed(3);
+
+	// ajustar as fee
+	ammount =  bot.config.trader.value/price;
+	ammount = ammount.toFixed(8);
+
 	log.info('debug', "advice >> buy >> price: " + price + " | ammount: " + ammount);
 	
+
 	//Executa a compra
 	bot.buycoin(price, ammount, function(err, data) {
 		if(err){
