@@ -18,7 +18,7 @@ exports.updateBalance = function(){
 	
 	// price average between the maximum and minimum of the offer book
 	exports.rate = (parseFloat(bot.pairTicker.highbid) + parseFloat(bot.pairTicker.lowask))/2;
-	exports.rate = exports.rate.toFixed(3);
+	exports.rate = exports.rate.toFixed(8);
 	
 	// current currency and asset value
 	exports.currency = bot.balance(bot.config.watch.currency)
@@ -29,13 +29,6 @@ exports.updateBalance = function(){
 
 exports.sell = function (price, ammount){
 	log.info('debug', "advice >> sell >> started");
-
-	price = parseFloat(bot.addpercent(parseFloat(bot.pairTicker.lowask), 0.2));
-	price = price.toFixed(8);
-	price = parseFloat(bot.addpercent(parseFloat(price), 0.25)).toFixed(8);
-
-	ammount =  parseFloat(bot.rempercent(parseFloat(bot.config.trader.value/price), 0.25));
-	ammount = ammount.toFixed(8);
 
 	log.info('debug', "advice >> sell >> price: " +price+ " bitcoinsVal: "+ammount);
 	
@@ -57,13 +50,6 @@ exports.sell = function (price, ammount){
 
 exports.buy = function (price, ammount){
 	log.info('debug', "advice >> buy >> started");
-	
-	price = parseFloat(bot.rempercent(parseFloat(bot.pairTicker.highbid), 0.1));
-	price = price.toFixed(8);
-
-	// ajustar as fee
-	ammount =  bot.config.trader.value/price;
-	ammount = ammount.toFixed(8);
 
 	log.info('debug', "advice >> buy >> price: " + price + " | ammount: " + ammount);
 	
@@ -91,16 +77,23 @@ exports.calculate = function(opt){
 	if (opt == 'sell'){
 		log.info('debug', "advice >> calculate >> Calculate amount to sell");
 		
-		exports.ammount = asset;
+		price = parseFloat(bot.addpercent(parseFloat(bot.pairTicker.lowask), 0.2));
+		price = price.toFixed(8);
+		exports.price = parseFloat(bot.addpercent(parseFloat(price), 0.25)).toFixed(8);
+
+		ammount =  parseFloat(bot.rempercent(parseFloat(bot.config.trader.value/price), 0.25));
+		exports.ammount = ammount.toFixed(8);
 		
 		log.info('debug', "advice >> calculate >> exports.ammount: " + exports.ammount);
 	} else if (opt == 'buy'){
 		log.info('debug', "advice >> calculate >> Calculate amount to buy");
 		
-		var fee = 0.25; //ajustar as fee 
-	
-		exports.ammount = parseFloat(bot.rempercent(parseFloat(exports.currency/exports.rate), fee));
-		exports.ammount = exports.ammount.toFixed(8);
+		price = parseFloat(bot.rempercent(parseFloat(bot.pairTicker.highbid), 0.1));
+		exports.price = price.toFixed(8);
+
+		// ajustar as fee
+		ammount =  bot.config.trader.value/price;
+		exports.ammount = ammount.toFixed(8);
 		
 		log.info('debug', "advice >> calculate >> exports.ammount: " + exports.ammount);
 	}
@@ -117,6 +110,7 @@ exports.opt = function(opt) {
 	if (opt == 'sell'){
 		exports.sell(exports.price, exports.ammount);
 	} else if (opt == 'buy'){
+		
 		exports.buy(exports.price, exports.ammount);
 	}
 }
