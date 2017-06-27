@@ -50,7 +50,7 @@ function manipularOrdens() {
 	if( advice.sellOrderId != 0 && advice.buyOrderId == 0) {
 		log.info('debug', "manipularOrdens >> Both orders have already been opened");
 		
-		if ( !exchange.isOpen(sellOrderId)) {
+		if ( !exchange.isOpen(advice.sellOrderId)) {
 			log.info('debug', "manipularOrdens >> Order of sell closed");
 			log.info('info', "manipularOrdens >> Trade successfully completed");
 			
